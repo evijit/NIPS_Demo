@@ -1,0 +1,21 @@
+[
+    {
+        "sectionId": "1",
+        "text": "Each paragraph tag has the commentable-section class, making it a section which can be commented on after you've initialized a new SideComments object and pointed it at the parent element, which is #commentable-container for this demo."
+    },
+
+    {
+        "sectionId": "2",
+        "text": "Clicking on the markers on the right will show the SideComments. Sections without any comments only show their marker on hover."
+    },  
+    {
+        "sectionId": "3",
+        "text": "This is the default theme that comes with SideComments.js. You can easily theme SideComments to your liking by not including default-theme.css and just styling it all yourself."
+    }
+]
+
+
+
+
+
+

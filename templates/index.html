@@ -14,7 +14,7 @@
         <h1 class="title">
             SideComments.js In Action
         </h1>
-        <p data-section-id="1" class="commentable-section">
+        <!-- <p data-section-id="1" class="commentable-section">
             Each paragraph tag has the "commentable-section" class, making it a section which can be commented on after you've initialized a new SideComments object and pointed it at the parent element, which is "#commentable-container" for this demo.
         </p>
         <p data-section-id="2" class="commentable-section">
@@ -22,13 +22,44 @@
         </p>
         <p data-section-id="3" class="commentable-section">
             This is the default theme that comes with SideComments.js. You can easily theme SideComments to your liking by not including "default-theme.css" and just styling it all yourself.
-        </p>
+        </p> -->
+
+        {% for id_text, para_text in toPass %}
+            <p class="commentable-section" data-section-id={{id_text}}>{{ para_text }}</p>
+        {% endfor %}
+
+        <div id="comment_json" style="display:none">
+            {{ all_comment_text}}
+        </div>
+
     </div>
+    <!-- <script type="text/javascript" src="../data/article/article_1.json"></script> -->
     <script src="/static/js/jquery.js"></script>
+    <!-- <script >
+        var fs=require('fs');
+        var article=fs.readFileSync('../data/article/article_1.json', 'utf8');
+        // var article = JSON.parse(data);
+        for(count = 1; count <= article.length; count++){
+            var para = document.createElement("p");
+            para.setAttribute("data-section-id",count.toString());
+            para.setAttribute("class","commentable-section");
+            var node = document.createTextNode(article[count]["text"]);
+            para.appendChild(node);
+            var element = document.getElementById("commentable-container");
+            element.appendChild(para);
+        }
+    </script>
+     -->
+
+     
     <script src="/static/js/side-comments.js"></script>
+    <!-- <script src="/static/js/article.js"></script>  -->
     <script src="/static/js/test_data.js"></script>
     <script>
         $(document).ready(function() {
+            var comment_data = document.getElementById("comment_json").innerHTML; 
+            console.log(comment_data);
+            var existingComments = JSON.parse(comment_data);
             var SideComments = require('side-comments');
             window.sideComments = new SideComments('#commentable-container', currentUser, existingComments);
             window.sideComments.on('commentPosted', function(comment) {
@@ -42,6 +73,14 @@
             });
         });
     </script>
+
+<form method="POST">
+    <input name="text">
+    <input type="submit">
+</form>
+
+
+
 </body>
 
 </html>

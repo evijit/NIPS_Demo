@@ -30,12 +30,26 @@ def load_comments(filepath):
 
 @app.route("/")
 def main():
+	return render_template('index.html')
+
+@app.route("/article")
+def article():
 	# load paragraph json
 	id_list, para_text_list = load_article("./static/data/article/test_article.json")
 	comments = load_comments("./static/data/comments/test_comments.json")
 	# id_list = ["4","5"]
 	# para_text_list = ["asdas","|wqewqeweq"]
-	return render_template('index.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+	return render_template('article.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+
+
+@app.route("/post")
+def post():
+	# load paragraph json
+	id_list, para_text_list = load_article("./static/data/article/test_article.json")
+	comments = load_comments("./static/data/comments/test_comments.json")
+	# id_list = ["4","5"]
+	# para_text_list = ["asdas","|wqewqeweq"]
+	return render_template('post.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
 # @app.route("/index")

@@ -125,11 +125,15 @@ def load_article(filepath):
 	data = json.load(open(filepath,"r"))
 	x = []
 	p = []
+	headline = ""
 	for d in data:
-		x.append(str(d["sectionId"]))
-		p.append(str(d["text"]))
+		if str(d["sectionId"]) != "-1":
+			x.append(str(d["sectionId"]))
+			p.append(str(d["text"]))
+		else:
+			headline = str(d["text"])
 
-	return x, p
+	return x, p, headline
 
 def load_comments_for_js(filepath):
 	data = json.load(open(filepath,"r"))
@@ -138,14 +142,18 @@ def load_comments_for_js(filepath):
 
 def load_comments(filepath):
 	data = json.load(open(filepath,"r"))
+	ids = set()
 	text_list = []
 	name_list = []
 	for d in data:
 		try : 
 			section_comment_list = d["comments"]
 			for c in section_comment_list:
-				name_list.append(str(c["authorName"]))
-				text_list.append(str(c["comment"]))
+				id = int(c["id"])
+				if id not in ids: 
+					name_list.append(str(c["authorName"]))
+					text_list.append(str(c["comment"]))
+					ids.add(id)
 	
 		except:
 			pass
@@ -156,18 +164,18 @@ def main():
 	return render_template('index.html')
 
 @app.route("/<variable1>/Article_<variable2>")
-def article(variable):
+def article(variable1, variable2):
 	article_json_path = "./static/data/dummy/" + str(variable1) + "/Article_" + str(variable2)+".json"
 	comment_json_path = "./static/data/dummy/" + str(variable1) + "/Comment_" + str(variable2)+".json"
 	
 	# load paragraph json
-	id_list, para_text_list = load_article(article_json_path)
+	id_list, para_text_list, headline = load_article(article_json_path)
 	comments = load_comments_for_js(comment_json_path)
 	
 	comment_text_list, commentor_name_list = load_comments(comment_json_path)
 	# id_list = ["4","5"]
 	# para_text_list = ["asdas","|wqewqeweq"]
-	return render_template('article.html', commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+	return render_template('article.html',headline=headline, commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
 
@@ -266,13 +274,13 @@ def new_comment(variable1, variable2):
 
 	## render back the page
 	# load paragraph json
-	id_list, para_text_list = load_article(article_json_path)
+	id_list, para_text_list, headline = load_article(article_json_path)
 	comments = load_comments_for_js(comment_json_path)
 	
 	comment_text_list, commentor_name_list = load_comments(comment_json_path)
 	# id_list = ["4","5"]
 	# para_text_list = ["asdas","|wqewqeweq"]
-	return render_template('article.html', commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+	return render_template('article.html',headline=headline, commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
 # @app.route("/post")

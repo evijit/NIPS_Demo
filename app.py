@@ -294,5 +294,5 @@ if __name__ == "__main__":
 	app.secret_key = 'nips_cnerg'
 	app.config['SESSION_TYPE'] = 'filesystem'
 	sess.init_app(app)
-	app.debug = True
+	app.debug = False
 	app.run()

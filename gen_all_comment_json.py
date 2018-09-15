@@ -59,6 +59,7 @@ blank = np.zeros(300)
 
 global model
 model = load_model("./resources/Guardian_gru_model.h5")
+# model = load_model("./resources/NYT_gru_model.h5")
 global graph
 graph = tf.get_default_graph()
 
@@ -87,7 +88,7 @@ def insert_comment_to_json(filepath, new_comment, para_id_list):
 		json.dump(data, fp)
 
 
-for i in range(4,22):
+for i in range(1,20):
     article_path = "./static/data/dummy/Guardian/Article_"+ str(i)+".json"
     comment_path = "./static/data/dummy/Guardian/Comment_"+ str(i)+".txt"
     comment_json_path = "./static/data/dummy/Guardian/Comment_"+ str(i)+".json"
@@ -140,3 +141,60 @@ for i in range(4,22):
         insert_comment_to_json(comment_json_path, new_comment, para_id_list)
     
     # break
+'''
+## Now for NYT
+
+for i in range(1,4):
+    article_path = "./static/data/dummy/NYT/Article_"+ str(i)+".json"
+    comment_path = "./static/data/dummy/NYT/Comment_"+ str(i)+".txt"
+    comment_json_path = "./static/data/dummy/NYT/Comment_"+ str(i)+".json"
+
+    comments = []
+    comment_file = open(comment_path,"r")
+    for line in comment_file:
+        l = line.strip()
+        l = line.strip("\n")
+
+        comments.append(str(l))
+
+    # print(comments)
+    cnt = 0
+    for c in comments:
+        cnt += 1
+        name = "user"+str(cnt)
+        comment_vec = get_embedding(c,1)
+        comment_vec = np.array([comment_vec])
+
+        data = json.load(open(article_path,"r"))
+        para_id_list = []
+        for d in data:
+            x = str(d["sectionId"])
+            p = str(d["text"])
+            para_vec = get_embedding(p,0)
+            para_vec = np.array([para_vec])
+
+            with graph.as_default():
+                scores = model.predict([para_vec, comment_vec])
+            
+            scores = np.squeeze(scores, axis=0)
+            rel_score = np.argmax(scores)
+
+            print(rel_score)
+            if rel_score == 3 or rel_score == 4:
+                para_id_list.append(x)
+
+        if len(para_id_list) == 0:
+            para_id_list.append("-1")
+
+        # create new comment
+        new_comment = {}
+        new_comment["id"] = cnt
+        new_comment["comment"] = c
+        new_comment["authorName"] = name
+        new_comment["authorId"] = 100
+        new_comment["authorAvatarUrl"] = "/static/img/avatar.png"
+    
+        insert_comment_to_json(comment_json_path, new_comment, para_id_list)
+    
+    # break
+'''

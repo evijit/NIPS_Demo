@@ -155,10 +155,10 @@ def load_comments(filepath):
 def main():
 	return render_template('index.html')
 
-@app.route("/article")
-def article():
+@app.route("/Guardian/<variable>")
+def article(variable):
 	# load paragraph json
-	id_list, para_text_list = load_article("./static/data/article/test_article.json")
+	id_list, para_text_list = load_article("./static/data/dummy/Guardian/"+str(variable)+".json")
 	comments = load_comments_for_js("./static/data/comments/test_comments.json")
 	
 	comment_text_list, commentor_name_list = load_comments("./static/data/comments/test_comments.json")
@@ -171,7 +171,7 @@ def article():
 
 
 
-def num_comments(filename):
+def num_comments(filepath):
 	data = json.load(open(filepath,"r"))
 	ids = set()
 	for d in data:
@@ -183,19 +183,30 @@ def num_comments(filename):
 	
 	return len(ids)
 
-def insert_comment_to_json(filename, new_comment, para_id_list):
+def insert_comment_to_json(filepath, new_comment, para_id_list):
 	data = json.load(open(filepath,"r"))
-	for idx, item in enumerate(data):
-		if item["sectionId"] in para_id_list:
-			data[idx]["comments"].append(new_comment)
+	
+	for pid in para_id_list:
+		found = 0
+		for idx, item in enumerate(data):
+			if item["sectionId"] == para_id_list:
+				data[idx]["comments"].append(new_comment)
+				found = 1
+				break
+		if found == 0:
+			nd = {}
+			nd["sectionId"] = pid
+			nd["comments"] = []
+			nd["comments"].append(new_comment)
 
+			data.append(nd)
 
-	with open(filename, 'w') as fp:
+	with open(filepath, 'w') as fp:
 		json.dump(data, fp)
 
 
-@app.route("/article", methods=['POST'])
-def new_comment():
+@app.route("/Guardian/<variable>", methods=['POST'])
+def new_comment(variable):
 	name = str(request.form['name'])
 	comment = str(request.form['message'])
 
@@ -207,7 +218,7 @@ def new_comment():
 	comment_vec = get_embedding(comment,1)
 	comment_vec = np.array([comment_vec])
 
-	data = json.load(open("./static/data/article/test_article.json","r"))
+	data = json.load(open("./static/data/dummy/Guardian/"+str(variable)+".json","r"))
 	para_id_list = []
 	for d in data:
 		x = str(d["sectionId"])
@@ -224,7 +235,9 @@ def new_comment():
 		print(rel_score)
 		if rel_score == 3 or rel_score == 4:
 			para_id_list.append(x)
-	
+
+	if len(para_id_list) == 0:
+		para_id_list.append("-1")
 
 	
 
@@ -247,7 +260,7 @@ def new_comment():
 
 	## render back the page
 	# load paragraph json
-	id_list, para_text_list = load_article("./static/data/article/test_article.json")
+	id_list, para_text_list = load_article("./static/data/dummy/Guardian/"+str(variable)+".json")
 	comments = load_comments_for_js("./static/data/comments/test_comments.json")
 	
 	comment_text_list, commentor_name_list = load_comments("./static/data/comments/test_comments.json")

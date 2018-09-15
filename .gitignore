@@ -1,3 +1,4 @@
 
 flask_session/*
 resources/GoogleNews-vectors-negative300.bin
+static/data/comments/test_comments.json

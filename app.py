@@ -12,7 +12,7 @@ import os
 from keras.models import load_model
 from gensim.models.keyedvectors import KeyedVectors
 import numpy as np
-
+from math import sqrt
 
 # import h5py
 # from keras.models import Model
@@ -26,7 +26,7 @@ import tensorflow as tf
 import pickle
 from sklearn.model_selection import StratifiedKFold
 import keras
-from math import sqrt
+
 '''
 app = Flask(__name__)
 sess = Session()
@@ -155,13 +155,16 @@ def load_comments(filepath):
 def main():
 	return render_template('index.html')
 
-@app.route("/Guardian/<variable>")
+@app.route("/<variable1>/Article_<variable2>")
 def article(variable):
-	# load paragraph json
-	id_list, para_text_list = load_article("./static/data/dummy/Guardian/"+str(variable)+".json")
-	comments = load_comments_for_js("./static/data/comments/test_comments.json")
+	article_json_path = "./static/data/dummy/" + str(variable1) + "/Article_" + str(variable2)+".json"
+	comment_json_path = "./static/data/dummy/" + str(variable1) + "/Comment_" + str(variable2)+".json"
 	
-	comment_text_list, commentor_name_list = load_comments("./static/data/comments/test_comments.json")
+	# load paragraph json
+	id_list, para_text_list = load_article(article_json_path)
+	comments = load_comments_for_js(comment_json_path)
+	
+	comment_text_list, commentor_name_list = load_comments(comment_json_path)
 	# id_list = ["4","5"]
 	# para_text_list = ["asdas","|wqewqeweq"]
 	return render_template('article.html', commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
@@ -205,8 +208,11 @@ def insert_comment_to_json(filepath, new_comment, para_id_list):
 		json.dump(data, fp)
 
 
-@app.route("/Guardian/<variable>", methods=['POST'])
-def new_comment(variable):
+@app.route("/<variable1>/Article_<variable>", methods=['POST'])
+def new_comment(variable1, variable2):
+	article_json_path = "./static/data/dummy/" + str(variable1) + "/Article_" + str(variable2)+".json"
+	comment_json_path = "./static/data/dummy/" + str(variable1) + "/Comment_" + str(variable2)+".json"
+	
 	name = str(request.form['name'])
 	comment = str(request.form['message'])
 
@@ -218,7 +224,7 @@ def new_comment(variable):
 	comment_vec = get_embedding(comment,1)
 	comment_vec = np.array([comment_vec])
 
-	data = json.load(open("./static/data/dummy/Guardian/"+str(variable)+".json","r"))
+	data = json.load(open(article_json_path,"r"))
 	para_id_list = []
 	for d in data:
 		x = str(d["sectionId"])
@@ -244,7 +250,7 @@ def new_comment(variable):
 	## add to comments json
 
 	# find number of comments 
-	comment_cnt = num_comments("./static/data/comments/test_comments.json")
+	comment_cnt = num_comments(comment_json_path)
 	
 	# create new comment
 	new_comment = {}
@@ -255,40 +261,40 @@ def new_comment(variable):
 	new_comment["authorAvatarUrl"] = "./static/img/jon_snow.png"
 
 	# find position and insert
-	insert_comment_to_json("./static/data/comments/test_comments.json", new_comment, para_id_list)
+	insert_comment_to_json(comment_json_path, new_comment, para_id_list)
 
 
 	## render back the page
 	# load paragraph json
-	id_list, para_text_list = load_article("./static/data/dummy/Guardian/"+str(variable)+".json")
-	comments = load_comments_for_js("./static/data/comments/test_comments.json")
+	id_list, para_text_list = load_article(article_json_path)
+	comments = load_comments_for_js(comment_json_path)
 	
-	comment_text_list, commentor_name_list = load_comments("./static/data/comments/test_comments.json")
+	comment_text_list, commentor_name_list = load_comments(comment_json_path)
 	# id_list = ["4","5"]
 	# para_text_list = ["asdas","|wqewqeweq"]
 	return render_template('article.html', commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
-@app.route("/post")
-def post():
-	# load paragraph json
-	id_list, para_text_list = load_article("./static/data/article/test_article.json")
-	comments = load_comments("./static/data/comments/test_comments.json")
-	# id_list = ["4","5"]
-	# para_text_list = ["asdas","|wqewqeweq"]
-	return render_template('post.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+# @app.route("/post")
+# def post():
+# 	# load paragraph json
+# 	id_list, para_text_list = load_article("./static/data/article/test_article.json")
+# 	comments = load_comments("./static/data/comments/test_comments.json")
+# 	# id_list = ["4","5"]
+# 	# para_text_list = ["asdas","|wqewqeweq"]
+# 	return render_template('post.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
 # @app.route("/index")
 # def index():
 # 	return render_template('index.html')
 
-@app.route('/', methods=['POST'])
-def my_form_post():
-	text = request.form['text']
-	processed_text = str(text)
-	processed_text = processed_text.strip()
-	print(processed_text)
+# @app.route('/', methods=['POST'])
+# def my_form_post():
+	# text = request.form['text']
+	# processed_text = str(text)
+	# processed_text = processed_text.strip()
+	# print(processed_text)
 
 	# load the model here
 	
@@ -299,9 +305,9 @@ def my_form_post():
 
 	# append the comment for that section
 
-	id_list, para_text_list = load_article("./static/data/article/test_article.json")
-	comments = load_comments("./static/data/comments/test_comments.json")
-	return render_template('index.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+	# id_list, para_text_list = load_article("./static/data/article/test_article.json")
+	# comments = load_comments("./static/data/comments/test_comments.json")
+	# return render_template('index.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 if __name__ == "__main__":
 	app.secret_key = 'nips_cnerg'

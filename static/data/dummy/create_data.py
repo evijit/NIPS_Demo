@@ -17,6 +17,7 @@ for i,d in df.iterrows():
 		comment= d['comment_name']
 		para= d['paragraph_name']
 		art_id= d['article_id_story']
+		heading_name= d['heading_name']
 
 		if comment==old_comment and first_iter==True:
 			sec_id+=1
@@ -27,6 +28,7 @@ for i,d in df.iterrows():
 			sec_id=1
 			article_id_dict[art_id][0][sec_id]=para
 			article_id_dict[art_id][1].append(comment)
+			article_id_dict[art_id][0][-1]=heading_name
 			first_iter=True
 			old_comment=comment
 
@@ -41,7 +43,7 @@ for i,d in df.iterrows():
 		continue
 
 
-c=4
+c=1
 
 for i in article_id_dict:
 

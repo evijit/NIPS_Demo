@@ -187,40 +187,28 @@
 
                         <div class="post-comments">
                             <!-- comment -->
+                            {% for iter_comment_text, commentor_name in commentPass %}
+                                
+                               
+                            
                             <div class="media">
                                 <div class="media-left">
                                     <img class="media-object" src="/static/img/avatar.png" alt="">
                                 </div>
                                 <div class="media-body">
                                     <div class="media-heading">
-                                        <h4>John Doe</h4>
+                                        <h4>{{ commentor_name }}</h4>
                                         <span class="time">March 27, 2018 at 8:00 am</span>
                                         <a href="#" class="reply">Reply</a>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat.
+                                    <p>{{ iter_comment_text }}
                                     </p>
                                 </div>
                             </div>
+                            {% endfor %}
+                            
                             <!-- /comment -->
 
-                            <!-- comment -->
-                            <div class="media">
-                                <div class="media-left">
-                                    <img class="media-object" src="/static/img/avatar.png" alt="">
-                                </div>
-                                <div class="media-body">
-                                    <div class="media-heading">
-                                        <h4>John Doe</h4>
-                                        <span class="time">March 27, 2018 at 8:00 am</span>
-                                        <a href="#" class="reply">Reply</a>
-                                    </div>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                        consequat.
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- /comment -->
                         </div>
                     </div>
                     <!-- /comments -->

@@ -1,7 +1,23 @@
 # NIPS_Demo
 
-TODO
+### Installion Steps
 
-1. Add comment to json
-2. Call model in the hierarchy established in app.py
-3. beautify
+1. Required Python 3.6.* or Anaconda 3
+2. pip3 install flask (or pip install flask if only python3 is present ikn local machine)
+3. pip/pip3 install Flask-Session
+4. conda/pip3/pip install keras
+5. conda/pip3/pip install tensorflow-gpu
+6. conda/pip3/pip install h5py
+7. Download Google pretrained word vectors
+    [GoogleNews-vectors-negative300.bin.gz](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing)
+
+    Unzip (gunzip <filename>)  and keep it in "resources" folder
+
+
+### TODOS
+
+1. Remove Images from news articles and the "javascript" etc. tag
+2. Decide which articles to show
+    a. Either show all the Guardian and NYT articles already in the repo now by creating 2 separate panels in the main page for redirection
+
+    b. Or, select the best possible articles

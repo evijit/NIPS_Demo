@@ -63,8 +63,6 @@
 
 .side-comment .add-comment {
     display: none;
-    visibility: hidden;
-    width: 0;
 }
 
 .side-comment.has-comments .add-comment,
@@ -81,7 +79,7 @@
 }
 
 .side-comment.has-comments .marker span {
-    display: none;
+    display: block;
 }
 
 .side-comment.has-comments .add-comment.hide {

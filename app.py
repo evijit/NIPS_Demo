@@ -162,11 +162,13 @@ def load_comments(filepath):
 
 def create_indexPass():
 	headline_text_list = []
-	url_text_list = []
+	p_text_list = []
+	a_text_list = []
 	for id in range(2, 20):
 		file_name = "./static/data/dummy/Guardian/Article_{}.json".format(str(id))
-		url_text = '"/Guardian/Article_{}"'.format(str(id))
-		url_text_list.append(url_text)
+		# url_text = '"/Guardian/Article_{}"'.format(str(id))
+		p_text_list.append("Guardian")
+		a_text_list.append(str(id))
 		data = json.load(open(file_name,"r"))
 		for d in data:
 			if d["sectionId"] == "-1":
@@ -174,21 +176,23 @@ def create_indexPass():
 
 	for id in range(2, 4):
 		file_name = "./static/data/dummy/NYT/Article_{}.json".format(str(id))
-		url_text = '"/NYT/Article_{}"'.format(str(id))
-		url_text_list.append(url_text)
+		# url_text = '"/NYT/Article_{}"'.format(str(id))
+		# url_text_list.append(url_text)
+		p_text_list.append("Guardian")
+		a_text_list.append(str(id))
 		data = json.load(open(file_name,"r"))
 		for d in data:
 			if d["sectionId"] == "-1":
 				headline_text_list.append(str(d["text"]))
 
-	print(url_text_list)
+	# print(url_text_list)
 	print(headline_text_list)	
-	return headline_text_list, url_text_list
+	return headline_text_list, p_text_list, a_text_list
 
 @app.route("/")
 def main():
-	headline_text_list, url_text_list = create_indexPass()
-	return render_template('index.html', indexPass=zip(headline_text_list, url_text_list))
+	headline_text_list, p_text_list, a_text_list = create_indexPass()
+	return render_template('index.html', indexPass=zip(headline_text_list, p_text_list, a_text_list))
 
 @app.route("/<variable1>/Article_<variable2>")
 def article(variable1, variable2):

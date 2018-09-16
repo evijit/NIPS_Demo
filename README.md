@@ -1,6 +1,6 @@
 # NIPS_Demo
 
-### Installion Steps
+### Installation Steps
 
 1. Required Python 3.6.* or Anaconda 3
 2. pip3 install flask (or pip install flask if only python3 is present ikn local machine)

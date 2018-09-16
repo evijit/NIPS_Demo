@@ -86,12 +86,12 @@
                 <!-- post -->
                 <div class="col-md-6">
                     <div class="post post-thumb">
-                        <a class="post-img" href="{{ url_for('NYT/Article_1') }}"><img src="/static/img/post.jpg" alt=""></a>
+                        <a class="post-img" href="{{ url_for('article', variable1 ='Guardian', variable2='1') }}"><img src="/static/img/post.jpg" alt=""></a>
                         <div class="post-body">
                             <div class="post-meta">
                                 <span class="post-date">March 27, 2018</span>
                             </div>
-                            <h3 class="post-title"><a href="{{ url_for('NYT/Article_1') }}">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
+                            <h3 class="post-title"><a href="{{ url_for('article', variable1='Guardian', variable2='1') }}">Matt Haig on Christmas: "It was an anchor at the bottom of the year. It fixed my childhood in place"</a></h3>
                         </div>
                     </div>
                 </div>
@@ -100,12 +100,13 @@
                 <!-- post -->
                 <div class="col-md-6">
                     <div class="post post-thumb">
-                        <a class="post-img" href="{{ url_for('NYT/Article_2') }}"><img src="/static/img/post.jpg" alt=""></a>
+                        <a class="post-img" href="{{ url_for('article', variable1='NYT', variable2='1') }}"><img src="/static/img/post.jpg" alt=""></a>
                         <div class="post-body">
                             <div class="post-meta">
                                 <span class="post-date">March 27, 2018</span>
                             </div>
-                            <h3 class="post-title"><a href="{{ url_for('NYT/Article_2') }}">Ask HN: Does Anybody Still Use JQuery?</a></h3>
+                            <h3 class="post-title"><a href="{{ url_for('article', variable1='NYT', variable2='1')
+                             }}">How Much Is That Doggie Affecting Prices?</a></h3>
                         </div>
                     </div>
                 </div>
@@ -121,48 +122,29 @@
                     </div>
                 </div>
 
+                {% for headline_text, url_text in indexPass %}
+
                 <!-- post -->
                 <div class="col-md-4">
                     <div class="post">
-                        <a class="post-img" href="{{ url_for('NYT/Article_3') }}"><img src="/static/img/post.jpg" alt=""></a>
+                        <a class="post-img" href={{ url_text }}><img src="/static/img/post.jpg" alt=""></a>
                         <div class="post-body">
                             <div class="post-meta">
                                 <span class="post-date">March 27, 2018</span>
                             </div>
-                            <h3 class="post-title"><a href="{{ url_for('NYT/Article_3') }}">Pagedraw UI Builder Turns Your Website Design Mockup Into Code Automatically</a></h3>
+                            <h3 class="post-title"><a href={{ url_text }}>{{ headline_text }}</a></h3>
                         </div>
                     </div>
                 </div>
                 <!-- /post -->
 
-                <!-- post -->
-                <div class="col-md-4">
-                    <div class="post">
-                        <a class="post-img" href="{{ url_for('Guardian/Article_1') }}"><img src="/static/img/post.jpg" alt=""></a>
-                        <div class="post-body">
-                            <div class="post-meta">
-                                <span class="post-date">March 27, 2018</span>
-                            </div>
-                            <h3 class="post-title"><a href="{{ url_for('Guardian/Article_1') }}">Chrome Extension Protects Against JavaScript-Based CPU Side-Channel Attacks</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <!-- /post -->
+                {% endfor %}
 
-                <!-- post -->
-                <div class="col-md-4">
-                    <div class="post">
-                        <a class="post-img" href="{{ url_for('Guardian/Article_2') }}"><img src="/static/img/post.jpg" alt=""></a>
-                        <div class="post-body">
-                            <div class="post-meta">
-                                <span class="post-date">March 27, 2018</span>
-                            </div>
-                            <h3 class="post-title"><a href="{{ url_for('Guardian/Article_2') }}">Ask HN: Does Anybody Still Use JQuery?</a></h3>
-                        </div>
-                    </div>
-                </div>
-                <!-- /post -->
-                <!-- /post -->
+                
+
+                
+
+                
             </div>
             <!-- /row -->
 

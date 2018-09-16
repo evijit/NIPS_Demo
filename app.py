@@ -159,9 +159,36 @@ def load_comments(filepath):
 			pass
 	return text_list, name_list
 
+
+def create_indexPass():
+	headline_text_list = []
+	url_text_list = []
+	for id in range(2, 20):
+		file_name = "./static/data/dummy/Guardian/Article_{}.json".format(str(id))
+		url_text = '"/Guardian/Article_{}"'.format(str(id))
+		url_text_list.append(url_text)
+		data = json.load(open(file_name,"r"))
+		for d in data:
+			if d["sectionId"] == "-1":
+				headline_text_list.append(str(d["text"]))
+
+	for id in range(2, 4):
+		file_name = "./static/data/dummy/NYT/Article_{}.json".format(str(id))
+		url_text = '"/NYT/Article_{}"'.format(str(id))
+		url_text_list.append(url_text)
+		data = json.load(open(file_name,"r"))
+		for d in data:
+			if d["sectionId"] == "-1":
+				headline_text_list.append(str(d["text"]))
+
+	print(url_text_list)
+	print(headline_text_list)	
+	return headline_text_list, url_text_list
+
 @app.route("/")
 def main():
-	return render_template('index.html')
+	headline_text_list, url_text_list = create_indexPass()
+	return render_template('index.html', indexPass=zip(headline_text_list, url_text_list))
 
 @app.route("/<variable1>/Article_<variable2>")
 def article(variable1, variable2):
@@ -216,7 +243,7 @@ def insert_comment_to_json(filepath, new_comment, para_id_list):
 		json.dump(data, fp)
 
 
-@app.route("/<variable1>/Article_<variable>", methods=['POST'])
+@app.route("/<variable1>/Article_<variable2>", methods=['POST'])
 def new_comment(variable1, variable2):
 	article_json_path = "./static/data/dummy/" + str(variable1) + "/Article_" + str(variable2)+".json"
 	comment_json_path = "./static/data/dummy/" + str(variable1) + "/Comment_" + str(variable2)+".json"
@@ -266,7 +293,7 @@ def new_comment(variable1, variable2):
 	new_comment["comment"] = comment
 	new_comment["authorName"] = name
 	new_comment["authorId"] = 100
-	new_comment["authorAvatarUrl"] = "./static/img/jon_snow.png"
+	new_comment["authorAvatarUrl"] = "/static/img/user.png"
 
 	# find position and insert
 	insert_comment_to_json(comment_json_path, new_comment, para_id_list)
@@ -293,9 +320,12 @@ def post():
 	return render_template('post.html', toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
+
+
 @app.route("/index")
 def index():
-	return render_template('index.html')
+	headline_text_list, url_text_list = create_indexPass()
+	return render_template('index.html', indexPass=zip(headline_text_list, url_text_list))
 
 @app.route('/', methods=['POST'])
 def my_form_post():

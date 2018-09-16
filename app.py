@@ -304,14 +304,14 @@ def my_form_post():
 	processed_text = processed_text.strip()
 	print(processed_text)
 
-	load the model here
+	# load the model here
 	
-	predict score for all paragraphs using the model
+	# predict score for all paragraphs using the model
 
 	
-	get the paragraph with the highest score
+	# get the paragraph with the highest score
 
-	append the comment for that section
+	# append the comment for that section
 
 	id_list, para_text_list = load_article("./static/data/article/test_article.json")
 	comments = load_comments("./static/data/comments/test_comments.json")

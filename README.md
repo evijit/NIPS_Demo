@@ -12,12 +12,3 @@
     [GoogleNews-vectors-negative300.bin.gz](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit?usp=sharing)
 
     Unzip (gunzip <filename>)  and keep it in "resources" folder
-
-
-### TODOS
-
-1. Remove Images from news articles and the "javascript" etc. tag
-2. Decide which articles to show
-    a. Either show all the Guardian and NYT articles already in the repo now by creating 2 separate panels in the main page for redirection
-
-    b. Or, select the best possible articles

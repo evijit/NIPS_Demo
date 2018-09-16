@@ -136,7 +136,7 @@ for i in range(1,20):
         new_comment["comment"] = c
         new_comment["authorName"] = name
         new_comment["authorId"] = 100
-        new_comment["authorAvatarUrl"] = "./static/img/jon_snow.png"
+        new_comment["authorAvatarUrl"] = "/static/img/user.png"
     
         insert_comment_to_json(comment_json_path, new_comment, para_id_list)
     

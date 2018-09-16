@@ -175,7 +175,7 @@ def article(variable1, variable2):
 	comment_text_list, commentor_name_list = load_comments(comment_json_path)
 	# id_list = ["4","5"]
 	# para_text_list = ["asdas","|wqewqeweq"]
-	return render_template('article.html',headline=headline, commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
+	return render_template('article.html',paper = variable1,headline=headline, commentPass=zip(comment_text_list,commentor_name_list), toPass=zip(id_list,para_text_list),  all_comment_text=comments)
 
 
 
